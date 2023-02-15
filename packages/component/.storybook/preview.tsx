@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { useDarkMode } from 'storybook-dark-mode';
 import { getLightTheme, ThemeProvider } from '../src';
 
 export const parameters = {
@@ -12,11 +13,13 @@ export const parameters = {
 };
 
 const lightTheme = getLightTheme('page');
+const darkTheme = getLightTheme('page');
 
 export const decorators = [
   (Story: React.ComponentType) => {
+    const isDark = useDarkMode();
     return (
-      <ThemeProvider theme={lightTheme}>
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <Story />
       </ThemeProvider>
     );
