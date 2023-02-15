@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useDarkMode } from 'storybook-dark-mode';
 import { getLightTheme, ThemeProvider } from '../src';
 
