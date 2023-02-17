@@ -15,8 +15,8 @@
     "@blocksuite/icons": "^2.0.2",
     "@blocksuite/react": "0.4.0-20230216011811-2776d93",
     "@blocksuite/store": "0.4.0-20230216011811-2776d93",
-    "@emotion/react": "^11.10.5",
-    "@emotion/styled": "^11.10.5",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
     "@mui/base": "=5.0.0-alpha.117",
     "@mui/icons-material": "=5.11.0",
     "@mui/material": "=5.11.8",
@@ -25,21 +25,20 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^7.0.0-beta.46",
-    "@storybook/addon-essentials": "^7.0.0-beta.46",
-    "@storybook/addon-links": "^7.0.0-beta.46",
-    "@storybook/builder-vite": "^7.0.0-beta.46",
-    "@storybook/react": "^7.0.0-beta.46",
-    "@storybook/react-vite": "7.0.0-beta.46",
+    "@storybook/addon-actions": "^7.0.0-beta.50",
+    "@storybook/addon-essentials": "^7.0.0-beta.50",
+    "@storybook/addon-links": "^7.0.0-beta.50",
+    "@storybook/builder-vite": "^7.0.0-beta.50",
+    "@storybook/react": "^7.0.0-beta.50",
+    "@storybook/react-vite": "7.0.0-beta.50",
     "@types/react": "^18.0.27",
     "@types/react-dom": "18.0.10",
     "@vitejs/plugin-react": "^3.1.0",
-    "storybook": "^7.0.0-beta.46",
+    "storybook": "^7.0.0-beta.50",
     "storybook-dark-mode": "^2.0.6",
     "swc": "^1.0.11",
     "swc-loader": "^0.2.3",
     "typescript": "^4.9.5",
-    "vite": "^4.0.2",
-    "webpack": "^5.75.0"
+    "vite": "^4.1.2"
   }
 }
