@@ -287,6 +287,7 @@ importers:
       ky-universal: ^0.11.0
       lib0: ^0.2.58
       lit: ^2.6.1
+      next-absolute-url: ^1.2.2
       swr: ^2.0.0
       typescript: ^4.9.5
       y-protocols: ^1.0.5
@@ -303,6 +304,7 @@ importers:
       ky: 0.33.1
       ky-universal: 0.11.0_ky@0.33.1
       lib0: 0.2.58
+      next-absolute-url: 1.2.2
       swr: 2.0.0
       y-protocols: 1.0.5
     devDependencies:
@@ -11557,6 +11559,10 @@ packages:
   /neo-async/2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: true
+
+  /next-absolute-url/1.2.2:
+    resolution: {integrity: sha512-Z2+LZXQTthhw2je9u4eq8QWXxXd57a6b54x9exBfQX4Dct6YxaMjcXZWNLHd9AOlCue84EsMpdSGP7wACqUnPg==}
+    dev: false
 
   /next-debug-local/0.1.5:
     resolution: {integrity: sha512-KnJPlmPJ1ObNxz3suK89H14RqdiSqfZhyca+PnDA+bqSUjjUDvQJmIOQi6CV6dtJpx9isdJu8Pi4reoxm3wyGQ==}

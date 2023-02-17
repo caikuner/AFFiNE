@@ -1,8 +1,14 @@
 import { displayFlex, styled } from '@affine/component';
 import { Breadcrumbs } from '@affine/component';
 import { IconButton } from '@affine/component';
+import type { WorkspaceUnitCtorParams } from '@affine/datacenter';
+import { getDataCenter, WorkspaceUnit } from '@affine/datacenter';
+import { createBlocksuiteWorkspace } from '@affine/datacenter';
 import { useTranslation } from '@affine/i18n';
+import { assertExists } from '@blocksuite/global/utils';
 import { PaperIcon, SearchIcon } from '@blocksuite/icons';
+import { Workspace } from '@blocksuite/store';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import dynamic from 'next/dynamic';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -19,22 +25,81 @@ const DynamicBlocksuite = dynamic(() => import('@/components/editor'), {
   ssr: false,
 });
 
-const Page: NextPageWithLayout = () => {
+export type PublicWorkspacePageProps = {
+  workspaceBinary: string;
+  json: Omit<
+    WorkspaceUnitCtorParams,
+    'blocksuiteWorkspace' | 'blobOptionsGetter'
+  >;
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+};
+
+export const getStaticProps: GetStaticProps<
+  PublicWorkspacePageProps
+> = async context => {
+  const { workspaceId, pageId } = context.params ?? {};
+  if (typeof workspaceId !== 'string' || typeof pageId !== 'string') {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+      props: {},
+    };
+  }
+  const dataCenter = await getDataCenter();
+
+  const workspace = await dataCenter.loadPublicWorkspace(workspaceId);
+  if (!workspace.blocksuiteWorkspace) {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+      props: {},
+    };
+  }
+  const json = JSON.parse(JSON.stringify(workspace.toJSON()));
+  const workspaceBinary = Workspace.Y.encodeStateAsUpdate(
+    workspace.blocksuiteWorkspace.doc
+  );
+  return {
+    props: {
+      workspaceBinary: Buffer.from(workspaceBinary).toString('base64'),
+      json,
+    },
+  };
+};
+
+const PageIdPage: NextPageWithLayout<PublicWorkspacePageProps> = ({
+  workspaceBinary,
+  json,
+}) => {
   const router = useRouter();
   const { workspaceId, pageId } = router.query as Record<string, string>;
-  const { status, workspace: workspaceUnit } =
-    useLoadPublicWorkspace(workspaceId);
   const { triggerQuickSearchModal } = useModal();
+  const workspaceUnit = useMemo(() => {
+    const unit = new WorkspaceUnit(json);
+    const blocksuiteWorkspace = createBlocksuiteWorkspace(json.id);
+    Workspace.Y.applyUpdate(
+      blocksuiteWorkspace.doc,
+      Uint8Array.from(atob(workspaceBinary), c => c.charCodeAt(0))
+    );
+    unit.setBlocksuiteWorkspace(blocksuiteWorkspace);
+    return unit;
+  }, [json, workspaceBinary]);
   const { t } = useTranslation();
+  const workspace = workspaceUnit.blocksuiteWorkspace;
+  assertExists(workspace);
 
-  const page = useMemo(() => {
-    if (workspaceUnit?.blocksuiteWorkspace) {
-      return workspaceUnit.blocksuiteWorkspace.getPage(pageId);
-    }
-    return null;
-  }, [workspaceUnit, pageId]);
-
-  const workspace = workspaceUnit?.blocksuiteWorkspace;
+  const page = workspace.getPage(pageId);
+  console.log('page', workspace, page, pageId);
   const pageTitle = page?.meta.title;
   const workspaceName = workspace?.meta.name;
 
@@ -45,19 +110,6 @@ const Page: NextPageWithLayout = () => {
     }
   }, [workspace, router, pageId]);
 
-  useEffect(() => {
-    if (status === 'error') {
-      router.push('/404');
-    }
-  }, [router, status]);
-
-  if (status === 'loading') {
-    return <PageLoading />;
-  }
-
-  if (status === 'error') {
-    return null;
-  }
   return (
     <PageContainer>
       <NavContainer>
@@ -99,11 +151,11 @@ const Page: NextPageWithLayout = () => {
   );
 };
 
-Page.getLayout = function getLayout(page: ReactElement) {
+PageIdPage.getLayout = function getLayout(page: ReactElement) {
   return <div>{page}</div>;
 };
 
-export default Page;
+export default PageIdPage;
 
 export const PageContainer = styled.div(({ theme }) => {
   return {

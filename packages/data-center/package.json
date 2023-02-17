@@ -31,6 +31,7 @@
     "ky": "^0.33.0",
     "ky-universal": "^0.11.0",
     "lib0": "^0.2.58",
+    "next-absolute-url": "^1.2.2",
     "swr": "^2.0.0",
     "y-protocols": "^1.0.5"
   }

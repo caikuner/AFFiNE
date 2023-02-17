@@ -245,9 +245,10 @@ export async function downloadWorkspace(
 ): Promise<ArrayBuffer> {
   try {
     if (published) {
-      return await bareClient
-        .get(`api/public/doc/${workspaceId}`)
-        .arrayBuffer();
+      const url = new URL(
+        `http://100.84.105.99:11001/api/public/doc/${workspaceId}`
+      );
+      return (await fetch(url)).arrayBuffer();
     }
     return await client.get(`api/workspace/${workspaceId}/doc`).arrayBuffer();
   } catch (error) {

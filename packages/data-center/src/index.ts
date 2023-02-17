@@ -25,6 +25,8 @@ const _initializeDataCenter = () => {
 
 export const getDataCenter = _initializeDataCenter();
 
+export { createBlocksuiteWorkspace } from './utils';
+export type { WorkspaceUnitCtorParams } from './workspace-unit';
 export type { DataCenter };
 export { getLogger } from './logger';
 export * from './message';
